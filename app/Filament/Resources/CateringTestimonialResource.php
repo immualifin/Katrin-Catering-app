@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CateringTestimonialResource\Pages;
-use App\Filament\Resources\CateringTestimonialResource\RelationManagers;
 use App\Models\CateringTestimonial;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,7 +22,20 @@ class CateringTestimonialResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\FileUpload::make('photo')
+                    ->required()
+                    ->image(),
+                Forms\Components\Select::make('catering_package_id')
+                    ->relationship('cateringPackage', 'name')
+                    ->required()
+                    ->searchable()
+                    ->preload(),
+                Forms\Components\Textarea::make('message')
+                    ->required()
+                    ->maxLength(65535),
             ]);
     }
 
@@ -31,7 +43,9 @@ class CateringTestimonialResource extends Resource
     {
         return $table
             ->columns([
-                //
+              Tables\Columns\ImageColumn::make('cateringPackage.thumbnail'),
+              Tables\Columns\ImageColumn::make('photo')->circular(),
+              Tables\Columns\TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

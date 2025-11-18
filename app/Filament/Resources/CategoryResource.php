@@ -23,7 +23,13 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\FileUpload::make('photo')
+                    ->image()
+                    ->required(),
             ]);
     }
 
@@ -31,7 +37,8 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                tables\Columns\ImageColumn::make('photo'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
