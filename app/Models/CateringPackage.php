@@ -16,7 +16,7 @@ class CateringPackage extends Model
     protected $fillable = [
         "name",
         "slug",
-        "tumbnail",
+        "thumbnail",
         "about",
         "is_popular",
         "category_id",
